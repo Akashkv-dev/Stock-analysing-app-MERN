@@ -1,0 +1,10 @@
+.background-shape {
+  background-color: #252833;
+  clip-path: polygon(0% 0%, 100% 0, 100% 100%, 0% 100%, 20% 50%);
+}
+@media (max-width: 724px) {
+  .background-shape {
+    clip-path: polygon(0% 0%, 100% 0, 100% 100%, 0% 100%);
+  }
+}
+

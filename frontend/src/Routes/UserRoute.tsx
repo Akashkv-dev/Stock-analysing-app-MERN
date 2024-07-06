@@ -6,7 +6,7 @@ const UserRoute = () => {
   return (
     <Routes>
         <Route path='/register' element={<UserSignup/>} />
-        <Route path="/login" element={<UserLogin/>}/>
+        <Route path="/" element={<UserLogin/>}/>
     </Routes>
   )
 }

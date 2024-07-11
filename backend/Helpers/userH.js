@@ -1,3 +1,4 @@
+const { where } = require('sequelize');
 const User = require('../Modal/User');
 const bycrypt = require('bcrypt');
 
@@ -14,6 +15,7 @@ module.exports = {
                 password:hashedPW
             })
             console.log('user created', newUser.toJSON());
+            return true
         } catch (error) {
             throw("error inserting data",error)
         }
@@ -26,6 +28,21 @@ module.exports = {
         } catch (error) {
             console.error('Error finding user:', error);
             throw error; 
+        }
+    },
+    verifyingUser : async (email)=> {
+        try {
+            const [updated] =await User.update(
+                { verified:true},
+                {
+                    where:{email:email, verified:false}
+                }
+            )
+          
+            return true
+        
+        } catch (error) {
+            console.log(error);
         }
     }
 }

@@ -5,6 +5,7 @@ require('dotenv').config()
 const port=process.env.PORT
 const userRouter=require('./Routes/user')
 const cors =require('cors')
+require('./utils/cron')
 
 app.use(cors())
 app.use(bodyParser.json());

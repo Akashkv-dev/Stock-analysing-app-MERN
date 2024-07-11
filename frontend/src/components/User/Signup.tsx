@@ -3,6 +3,8 @@ import '../../App.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
+import EmailSent from './Emailsent';
+import Loader from '../Common/Loader';
 
 
 type userData={
@@ -31,6 +33,10 @@ const Signup = () => {
     email:'',
     password:''
    });
+
+   const [emailSent,setEmailSent] = useState<boolean>(false)
+   const [loading, setLoading] = useState<boolean>(false)
+
    const handleChange=(e:React.ChangeEvent<HTMLInputElement>) =>{
     const {name,value} =e.target;
     let error ='';
@@ -77,20 +83,21 @@ const Signup = () => {
     
     const handleSubmit=async (e:React.FormEvent)=>{
         e.preventDefault()
-        if(!(errors.email == '' && errors.name == '' && errors.password == '')){
-            console.log(errors);
-            
-            toast('Please fill in the all fields!');
-            return
+        if (!(userData.email.trim() && userData.name.trim() && userData.password.trim())) {
+          toast('Please fill in all the fields!');
+          return;
         }
         else{
             try {
+              setLoading(true)
                 await axios.post('http://localhost:3000/register',userData)
                 .then((response)=>{
                     if(response.status === 200){
                         console.log(response);
+                        setLoading(false)
+                        setEmailSent(true)
+                        console.log(emailSent);
                         
-                        alert(response.data.message)
                     }else{
                         console.log("unhandled status code:",response.status);
                     }
@@ -117,6 +124,7 @@ const Signup = () => {
     }
 
   return (
+    <>
     <div className="flex flex-col md:flex-row w-full h-screen items-center bg-white shadow-lg overflow-hidden">
       <div className="w-full md:w-1/2 flex flex-col items-center justify-center">
         <div className="flex flex-col items-center space-y-4">
@@ -194,7 +202,13 @@ const Signup = () => {
         </div>
       </div>
     </div>
+
+    {loading && <Loader/>}
+    
+    {emailSent && <EmailSent/>}
+    </>
   );
+  
 };
 
 export default Signup;

@@ -27,8 +27,13 @@ const User = sequelize.define('User', {
     deleted: {
         type : DataTypes.BOOLEAN,
         defaultValue : false
-
-    }
+    },
+    verified : {
+        type : DataTypes.BOOLEAN,
+        defaultValue:false
+    },
+}, {
+        timestamps: true
 });
 
 // Sync the model with the database

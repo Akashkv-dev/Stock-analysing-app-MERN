@@ -1,6 +1,7 @@
 const { verify } = require("jsonwebtoken");
 const userH = require("../Helpers/userH");
 require('dotenv').config();
+const bycrypt = require('bcrypt');
 const { generateToken, getMailOptions, getTransport } = require("../utils/service");
 
 module.exports = {
@@ -16,7 +17,8 @@ module.exports = {
       } else {
         if (pwLength >= 6) {
           console.log(datas);
-          const token = generateToken(email);
+          const role='user'
+          const token = generateToken(email,role);
           const link = `http://localhost:3000/verify?token=${token}`;
 
           //Create mailrequest
@@ -83,5 +85,28 @@ module.exports = {
   else{
     console.log('verify updating error');
   }
+  },
+  loginUser:async (req,res)=> {
+    console.log(req.body);
+    try {
+      const {email,password} = req.body;
+      const user = await userH.findUser(email);
+      if(!user || user.deleted === true){
+          res.status(404).json({message:'invalid user'})
+      }else if(user.status === 'Deactive'){
+        res.status(401).json({message:'Admin Blocked'})
+      }else{
+        const matched = await bycrypt.compare(password,user.password)
+        console.log(matched);
+        if(matched){
+          const token = generateToken(email,user.role);
+          res.status(200).json({message:'user loggedIn',Token:token,role:'user'})
+        }else {
+          res.status(400).json({ message: "invalid password" });
+        }
+      }
+    } catch (error) {
+      res.status(404).json({ message: "login error" });
+    }    
   }
 };

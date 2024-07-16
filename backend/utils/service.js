@@ -10,11 +10,12 @@ exports.getTransport = () => nodeMailer.createTransport({
     }
   });
 
-  exports.generateToken = (email) => {
+  exports.generateToken = (email,role) => {
     const expirationDate = new Date();
     expirationDate.setMinutes(new Date().getMinutes() + 5);
-    return jwt.sign({ email, expirationDate }, process.env.JWT_SECRET_KEY);
+    return jwt.sign({ email,role, expirationDate }, process.env.JWT_SECRET_KEY);
 };
+
 
 exports.getMailOptions = (email, link) => {
     let body = `

@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import EmailSent from "./Emailsent";
 import Loader from "../Common/Loader";
-import {Register} from "../../Service/UserApi"
+import { Register } from "../../Service/UserApi";
 
 type userData = {
   name: string;
@@ -18,7 +18,7 @@ type errorType = {
   password: string;
 };
 
-const Signup:React.FC = () => {
+const Signup: React.FC = () => {
   const [userData, setUserData] = useState<userData>({
     name: "",
     email: "",
@@ -85,16 +85,16 @@ const Signup:React.FC = () => {
       toast("Please fill in all the fields!");
       return;
     } else {
-        setLoading(true);
+      setLoading(true);
       try {
-        const response=await Register(userData);
-        if(response.status === 200){
+        const response = await Register(userData);
+        if (response.status === 200) {
           console.log(response);
-            setLoading(false);
-            setEmailSent(true);
+          setLoading(false);
+          setEmailSent(true);
         }
       } catch (err) {
-        setLoading(false)
+        setLoading(false);
         const error = err as { response: { data: { message: string } } };
         toast(error.response.data.message);
       }
@@ -203,5 +203,3 @@ const Signup:React.FC = () => {
 };
 
 export default Signup;
-
-

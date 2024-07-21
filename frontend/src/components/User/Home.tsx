@@ -2,6 +2,7 @@ import searchIcon from "../../assets/icons/search.svg"
 import Cross from "./Cross";
 import Intervel from "./Intervels";
 import Line from "./Line";
+import Pen from "./Pen";
 import Square from "./Square";
 
 
@@ -40,7 +41,7 @@ export const Home = () => {
             <Cross/>
             <Line/>
             <Square/>
-          <button className="text-gray-400 hover:text-white">↗</button>
+            <Pen/>
           <button className="text-gray-400 hover:text-white">📈</button>
           <button className="text-gray-400 hover:text-white">🗑</button>
         </aside>

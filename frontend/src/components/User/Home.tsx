@@ -1,5 +1,9 @@
 import searchIcon from "../../assets/icons/search.svg"
+import Cross from "./Cross";
 import Intervel from "./Intervels";
+import Line from "./Line";
+import Square from "./Square";
+
 
 export const Home = () => {
   return (
@@ -33,9 +37,9 @@ export const Home = () => {
       <main className="flex-1 flex">
         {/* Sidebar */}
         <aside className="w-16 bg-gray-800 flex flex-col items-center py-4 space-y-4">
-          <button className="text-gray-400 hover:text-white">+</button>
-          <button className="text-gray-400 hover:text-white">/</button>
-          <button className="text-gray-400 hover:text-white">□</button>
+            <Cross/>
+            <Line/>
+            <Square/>
           <button className="text-gray-400 hover:text-white">↗</button>
           <button className="text-gray-400 hover:text-white">📈</button>
           <button className="text-gray-400 hover:text-white">🗑</button>

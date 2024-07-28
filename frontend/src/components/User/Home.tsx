@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import searchIcon from "../../assets/icons/search.svg";
 import Cross from "./Cross";
 import Intervel from "./Intervels";
@@ -6,8 +7,31 @@ import Pen from "./Pen";
 import Polyline from "./Polyline";
 import Square from "./Square";
 import Trash from "./Trash";
+import { getData } from "../../utils/parseData.ts";
+import { SetStateAction, useEffect, useState } from "react";
+import CandleChart  from "./CandleChart";
 
-export const Home = () => {
+interface DataPoint {
+    date: Date;
+    open: number;
+    high: number;
+    low: number;
+    close: number;
+    volume: number;
+}
+
+export const Home: React.FC = () => {
+    const [data, setData] = useState<DataPoint[] | null>(null);
+    useEffect(() => {
+		getData().then((data: SetStateAction<DataPoint[] | null>) => {
+            console.log('dataaaaaa',data)
+			setData(data);
+		});
+	}, []);
+
+	if (data === null) {
+		return <div>Loading...</div>
+	}
   return (
     <div className="bg-gray-700 text-white h-screen flex flex-col">
       {/* Header */}
@@ -50,8 +74,8 @@ export const Home = () => {
         {/* Chart area */}
         <section className=" flex-1">
           {/* This is where you'd implement your chart */}
-          <div className="bg-gray-800 h-[36.3rem]  rounded-l-lg flex items-center justify-center">
-            Chart
+          <div className="bg-gray-800 h-[36.3rem]  rounded-l-lg flex">
+			<CandleChart data={data}/>
           </div>
           {/* Footer */}
           <footer className=" bg-gray-800 rounded-l-lg mt-1 p-2 flex justify-between items-center">

@@ -8,8 +8,9 @@ import Polyline from "./Polyline";
 import Square from "./Square";
 import Trash from "./Trash";
 import { getData } from "../../utils/parseData.ts";
-import { SetStateAction, useEffect, useState } from "react";
+import { SetStateAction, useEffect, useRef, useState } from "react";
 import CandleChart  from "./CandleChart";
+import Dropdown from "./Profile.tsx";
 
 interface DataPoint {
     date: Date;
@@ -22,17 +23,36 @@ interface DataPoint {
 
 export const Home: React.FC = () => {
     const [data, setData] = useState<DataPoint[] | null>(null);
+    const [dropdown,setDropdown] = useState<boolean>(false)
+    const dropdownRef = useRef<HTMLDivElement>(null);
+    
     useEffect(() => {
 		getData().then((data: SetStateAction<DataPoint[] | null>) => {
-            console.log('dataaaaaa',data)
+            // console.log('dataaaaaa',data)
 			setData(data);
 		});
 	}, []);
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setDropdown(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [dropdownRef]);
 
 	if (data === null) {
 		return <div>Loading...</div>
 	}
+    const handleprofile =()=>{
+        setDropdown(true)
+    }
   return (
+    <>
     <div className="bg-gray-700 text-white h-screen flex flex-col">
       {/* Header */}
       <header className="flex items-center justify-between p-2 bg-gray-800">
@@ -41,7 +61,9 @@ export const Home: React.FC = () => {
             className="pr-2"
             src="/public/icones/icons8-male-user-48.png"
             alt="icones"
+            onClick={handleprofile}
           />
+          
           <input
             type="text"
             placeholder="Search..."
@@ -61,6 +83,7 @@ export const Home: React.FC = () => {
 
       {/* Main content */}
       <main className="flex-1 flex pt-1">
+      
         {/* Sidebar */}
         <aside className="w-14 bg-gray-800 flex flex-col items-center py-4 space-y-4 mr-1 rounded-r-lg">
           <Cross />
@@ -73,6 +96,7 @@ export const Home: React.FC = () => {
 
         {/* Chart area */}
         <section className=" flex-1">
+            
           {/* This is where you'd implement your chart */}
           <div className="bg-gray-800 h-[36.3rem]  rounded-l-lg flex">
 			<CandleChart data={data}/>
@@ -86,6 +110,17 @@ export const Home: React.FC = () => {
           </footer>
         </section>
       </main>
+      <div  className="absolute m-10" ref={dropdownRef}>
+      {dropdown && 
+        (<Dropdown/>)}
+      </div>
     </div>
+    
+        
+    
+    
+    
+    </>    
+
   );
 };

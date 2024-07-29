@@ -1,6 +1,7 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
+import { speak } from '../../utils/Speak';
 
 type Props={
     head:string,
@@ -8,6 +9,7 @@ type Props={
 }
 
 export const Login = ({head,loginType}:Props) => {
+  const navigate=useNavigate();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -32,8 +34,11 @@ export const Login = ({head,loginType}:Props) => {
         {email,password}
       )
       .then((response)=>{
-        if(response.status === 200){
-          console.log(response);
+        if(response.status === 200 && response.data.role === 'user'){
+          const token = response.data.Token;
+          localStorage.setItem("userToken",token)
+          navigate('/home')
+          speak()
           
         }else{
           console.log("unhandled status code:",response.status);

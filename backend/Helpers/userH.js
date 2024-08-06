@@ -8,13 +8,13 @@ module.exports = {
             const {name,email,password} = data
             const saltRounds = 10
             const hashedPW = await bycrypt.hash(password,saltRounds);
-            console.log(hashedPW);
+            // console.log(hashedPW);
             const newUser = await User.create({
                 name:name,
                 email:email,
                 password:hashedPW
             })
-            console.log('user created', newUser.toJSON());
+            // console.log('user created', newUser.toJSON());
             return true
         } catch (error) {
             throw("error inserting data",error)
@@ -23,7 +23,7 @@ module.exports = {
     findUser: async (Email) => {
         try {
             const user = await User.findOne({ where: { email: Email } });
-            console.log(user);
+            // console.log(user);
             return user;
         } catch (error) {
             console.error('Error finding user:', error);

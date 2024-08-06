@@ -14,7 +14,7 @@ const removeUnverifiedUsers = async () => {
         }
       }
     });
-    console.log('Unverified users removed successfully!');
+    // console.log('Unverified users removed successfully!');
   } catch (error) {
     console.error('Error removing unverified users:', error);
   }
@@ -22,6 +22,6 @@ const removeUnverifiedUsers = async () => {
 
 // Schedule the task to run every minute
 cron.schedule('* * * * *', () => {
-  console.log('Running cron job to remove unverified users');
+  // console.log('Running cron job to remove unverified users');
   removeUnverifiedUsers();
 });

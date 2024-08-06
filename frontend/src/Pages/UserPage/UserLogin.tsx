@@ -1,20 +1,20 @@
-  import { useNavigate } from "react-router-dom"
-import Login from "../../components/User/Login"
-import { useEffect } from "react"
+import { useNavigate } from "react-router-dom";
+import Login from "../../components/User/Login";
+import { useEffect } from "react";
 
 const UserLogin = () => {
-  const navigate=useNavigate()
-  useEffect(()=>{
-    const token = localStorage.getItem('userToken')
-    if(token){
-      navigate('/home')
-    }
-  })
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+      if (token) {
+        navigate("/home");
+      }
+  });
   return (
     <div>
-        <Login/>
+      <Login />
     </div>
-  )
-}
+  );
+};
 
-export default UserLogin
+export default UserLogin;

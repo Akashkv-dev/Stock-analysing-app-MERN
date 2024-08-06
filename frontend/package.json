@@ -26,7 +26,8 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.24.0",
     "react-toastify": "^10.0.5",
-    "shortid": "^2.2.16"
+    "shortid": "^2.2.16",
+    "socket.io-client": "^4.7.5"
   },
   "devDependencies": {
     "@types/d3-dsv": "^3.0.7",

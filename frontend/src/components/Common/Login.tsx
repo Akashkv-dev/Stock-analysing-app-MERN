@@ -8,6 +8,7 @@ type Props={
     loginType:'user' | 'admin';
 }
 
+
 export const Login = ({head,loginType}:Props) => {
   const navigate=useNavigate();
 
@@ -36,7 +37,12 @@ export const Login = ({head,loginType}:Props) => {
       .then((response)=>{
         if(response.status === 200 && response.data.role === 'user'){
           const token = response.data.Token;
-          localStorage.setItem("userToken",token)
+          const name = response.data.name
+          const email = response.data.email
+         
+          localStorage.setItem("token", token);
+          localStorage.setItem("name", name);
+          localStorage.setItem("email", email);
           navigate('/home')
           speak()
           

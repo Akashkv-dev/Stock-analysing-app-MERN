@@ -45,7 +45,7 @@ const User = sequelize.define('User', {
     try {
     //   await sequelize.query('DROP TABLE IF EXISTS "Users";');
       await User.sync({ alter: true });
-      console.log('User table updated!');
+    //   console.log('User table updated!');
     } catch (error) {
       console.error('Error syncing user table:', error);
     }

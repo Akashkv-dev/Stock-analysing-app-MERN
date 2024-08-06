@@ -9,3 +9,7 @@ type user ={
 export const Register=(userData:user) => {
     return axiosInstance.post('/register', userData);
 }
+
+export const verify=(token:string) => {
+    return axiosInstance.get(`/verify?token=${token}`,);
+}

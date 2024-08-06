@@ -16,10 +16,10 @@ module.exports = {
         res.status(401).json({ message: "existing email" });
       } else {
         if (pwLength >= 6) {
-          console.log(datas);
+          // console.log(datas);
           const role='user'
           const token = generateToken(email,role);
-          const link = `http://localhost:3000/verify?token=${token}`;
+          const link = `http://192.168.1.74:5173/verify?token=${token}`;
 
           //Create mailrequest
           let mailRequest = getMailOptions(email, link);
@@ -78,9 +78,10 @@ module.exports = {
   }  
   const email=decodetoken.email
   const update= await userH.verifyingUser(email)
+  const user= await userH.findUser(email)
   if(update==true){
 
-      res.status(200).send("verfication successful");
+      res.status(200).json({massage:"verfication successful",email:user.email,name:user.name,token:token});
   }
   else{
     console.log('verify updating error');
@@ -97,10 +98,11 @@ module.exports = {
         res.status(401).json({message:'Admin Blocked'})
       }else{
         const matched = await bycrypt.compare(password,user.password)
-        console.log(matched);
+        // console.log(matched);
         if(matched){
           const token = generateToken(email,user.role);
-          res.status(200).json({message:'user loggedIn',Token:token,role:'user'})
+          const name =user.name
+          res.status(200).json({message:'user loggedIn',Token:token,role:'user',name:name,email:email})
         }else {
           res.status(400).json({ message: "invalid password" });
         }

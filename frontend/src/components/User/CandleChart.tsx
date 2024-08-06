@@ -34,6 +34,7 @@ const CandleChart: React.FC<CandleStickChartProps> = (props) => {
           colors: "#FFF",
         },
       },
+      
     },
     yaxis: {
       tooltip: {
@@ -80,7 +81,7 @@ const CandleChart: React.FC<CandleStickChartProps> = (props) => {
    
 
   return (
-    <div id="chart" style={{ width: "100%" }}>
+    <div id="chart" style={{ width: "100%"}}>
       <ReactApexChart
         options={options}
         series={options.series}

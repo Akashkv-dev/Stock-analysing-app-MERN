@@ -1,11 +1,12 @@
 import { Menu, MenuItem } from '@headlessui/react'
 import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
 
 export default function Dropdown() {
     const navigate = useNavigate()
     const handlelogout = ()=>{
-         localStorage.removeItem('userToken')
+         localStorage.removeItem('token')
+         localStorage.removeItem("name");
+          localStorage.removeItem("email");
         navigate('/')
     }
   return (

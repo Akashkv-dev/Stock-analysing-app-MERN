@@ -28,7 +28,7 @@ app.use((err, req, res, next) => {
 
 io.on('connection',(Socket)=>{
   console.log('new client connected');
-  Socket.on('chat',chat => {
+  Socket.on('chat',(chat) => {
     io.emit('chat', chat)
   })
 
@@ -38,7 +38,7 @@ io.on('connection',(Socket)=>{
 })
 // Start the server
 try {
-  app.listen(port, () => {
+  server.listen(port, () => {
     console.log("Server is running on port", port);
   });
 } catch (error) {

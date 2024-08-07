@@ -1,6 +1,10 @@
-import { useState } from "react"
+import React, { useState } from "react"
+interface ChatInputProps {
+  addMessage: (chat: { message: string }) => void;
+}
 
-const ChatInput = ({addMessage}) => {
+
+const ChatInput:React.FC<ChatInputProps> = ({addMessage}) => {
     const [message , setMessage] =useState<string>('')
     const sendMessage = ()=> {
       if (message.trim() !== '') {

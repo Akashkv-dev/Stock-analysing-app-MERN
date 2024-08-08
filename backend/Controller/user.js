@@ -19,7 +19,7 @@ module.exports = {
           // console.log(datas);
           const role='user'
           const token = generateToken(email,role);
-          const link = `http://192.168.1.74:5173/verify?token=${token}`;
+          const link = `http://localhost:5173/verify?token=${token}`;
 
           //Create mailrequest
           let mailRequest = getMailOptions(email, link);
@@ -110,5 +110,11 @@ module.exports = {
     } catch (error) {
       res.status(404).json({ message: "login error" });
     }    
-  }
+  },
+  creatGroup:async (req,res) =>{
+    const groupName=req.body.groupName
+  
+    console.log('group',groupName);
+    console.log(req.user);
+  }  
 };

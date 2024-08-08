@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { addgroup } from "../../Service/UserApi";
 
 interface GroupCreateComponentProps {
     cancelGroup: () => void;
@@ -7,10 +8,16 @@ interface GroupCreateComponentProps {
 const GroupCreateComponent: React.FC<GroupCreateComponentProps> = ({cancelGroup}) => {
   const [groupName, setGroupName] = useState<string>('');
 
-  const handleSubmit = (event:React.FormEvent) => {
+  const handleSubmit =async (event:React.FormEvent) => {
     event.preventDefault();
     // Handle group creation logic here
     console.log('Group Name:', groupName);
+    try {
+      await addgroup(groupName);
+    } catch (error) {
+      console.error(error);
+      
+    }
   };
   const handleCancel= ()=>{
     cancelGroup()
@@ -29,6 +36,7 @@ const GroupCreateComponent: React.FC<GroupCreateComponentProps> = ({cancelGroup}
             type="text"
             id="groupName"
             value={groupName}
+            name="group"
             onChange={(e) => setGroupName(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             placeholder="Enter group name"
@@ -37,7 +45,7 @@ const GroupCreateComponent: React.FC<GroupCreateComponentProps> = ({cancelGroup}
         </div>
         </form>
         <button
-          type="submit"
+          onClick={handleSubmit}
           className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
           Create Group

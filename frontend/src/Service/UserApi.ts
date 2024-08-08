@@ -13,3 +13,8 @@ export const Register=(userData:user) => {
 export const verify=(token:string) => {
     return axiosInstance.get(`/verify?token=${token}`,);
 }
+
+export const addgroup=(groupName:string)=>{
+    return axiosInstance.post('/addgroup',{groupName})
+
+}

@@ -14,7 +14,7 @@ const removeUnverifiedUsers = async () => {
         }
       }
     });
-    // console.log('Unverified users removed successfully!');
+    console.log('Unverified users removed successfully!');
   } catch (error) {
     console.error('Error removing unverified users:', error);
   }

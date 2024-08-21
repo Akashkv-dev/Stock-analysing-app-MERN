@@ -3,6 +3,7 @@ const userH = require("../Helpers/userH");
 require('dotenv').config();
 const bycrypt = require('bcrypt');
 const { generateToken, getMailOptions, getTransport } = require("../utils/service");
+const Group = require("../Modal/Group");
 
 module.exports = {
   registerUser: async (req, res) => {
@@ -81,7 +82,7 @@ module.exports = {
   const user= await userH.findUser(email)
   if(update==true){
 
-      res.status(200).json({massage:"verfication successful",email:user.email,name:user.name,token:token});
+      res.status(200).json({massage:"verfication successful",email:user.email,name:user.name,token:token,id:user.id});
   }
   else{
     console.log('verify updating error');
@@ -102,7 +103,8 @@ module.exports = {
         if(matched){
           const token = generateToken(email,user.role);
           const name =user.name
-          res.status(200).json({message:'user loggedIn',Token:token,role:'user',name:name,email:email})
+          const id=user.id
+          res.status(200).json({message:'user loggedIn',Token:token,role:'user',name:name,email:email,id:id})
         }else {
           res.status(400).json({ message: "invalid password" });
         }
@@ -112,9 +114,56 @@ module.exports = {
     }    
   },
   creatGroup:async (req,res) =>{
-    const groupName=req.body.groupName
+    const {gName,adminId}=req.body
   
-    console.log('group',groupName);
-    console.log(req.user);
-  }  
+    console.log('group',req.body);
+    console.log('adId',adminId);
+    
+    
+    try {
+      const admin = await userH.findAdId(adminId)
+      console.log(admin);
+      if(!admin) {
+        return res.status(404).json({ message: 'Admin user not found' });
+      }
+      const existingGroup=await userH.findGroup(adminId)
+      console.log('exist group',existingGroup.length);
+      const groupWithName = existingGroup.find(group => group.gName === gName);
+      if(groupWithName){
+        return res.status(404).json({message:'existing group'})
+      }
+      const group =await userH.create(gName,adminId)
+      console.log(group);
+      res.status(200).json(group)
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+
+  },
+  
+  getGroupData:async (req,res)=>{
+    const id=req.query.id
+    // console.log("saanm",req.query.id);
+    try {
+      const groups= await userH.findGroup(id)
+      console.log(groups);
+      res.status(200).json(groups)
+    } catch (error) {
+      console.error(error);
+    }
+    
+  },
+  addMem:async (req,res)=>{
+    console.log(req.body);
+    const {email,Grpid}=req.body
+  
+    const user= await userH.findUser(email)
+    if(!user){
+      return res.status(401).json({message:'invalid user'})
+    }
+    const addUser=await userH.addGrpMember(Grpid,+user.id)
+    if(addUser === true){
+      res.status(200).json({message:'user added'})
+    }
+  }
 };

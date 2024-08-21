@@ -42,6 +42,7 @@ export const Home: React.FC = () => {
         !dropdownRef.current.contains(event.target as Node)
       ) {
         setDropdown(false);
+        
       }
     }
 
@@ -57,8 +58,8 @@ export const Home: React.FC = () => {
   const handleprofile = () => {
     setDropdown(true);
   };
-  const handleGroup = (value: boolean | ((prevState: boolean) => boolean)) => {
-    setgroupUp(value);
+  const handleGroup = () => {
+    setgroupUp((prevState) => !prevState);
   };
 
   return (
@@ -96,7 +97,7 @@ export const Home: React.FC = () => {
         </header>
 
         {/* Main content */}
-        <main className="flex-1 flex pt-1">
+        <main className="flex-1 flex pt-1 overflow-hidden">
           {/* Sidebar */}
           <aside className="w-14 bg-gray-800 flex flex-col items-center py-4 space-y-4 mr-1 rounded-r-lg">
             <Cross />
@@ -108,17 +109,19 @@ export const Home: React.FC = () => {
           </aside>
 
           {/* Chart area */}
-          <section className=" flex-1">
+          <section className=" flex-1 flex overflow-hidden">
             {/* This is where you'd implement your chart */}
-            <div className="bg-gray-800 h-[36.3rem]  rounded-l-lg flex">
+            <div className={`bg-gray-800 ${groupUp ? "w-3/5" : "flex-1"} h-[36.3rem] rounded-l-lg flex`}>
               <CandleChart data={data} />
+              </div>
 
               {groupUp && (
-                <div className="w-3/5">
+                <div className="w-2/5 ">
                   <ChatContainer />
                 </div>
               )}
-            </div>
+          </section>
+        </main>
             {/* Footer */}
             <footer className=" bg-gray-800 rounded-l-lg mt-1 p-2 flex justify-between items-center">
               <div className="flex items-center space-x-2">
@@ -126,8 +129,6 @@ export const Home: React.FC = () => {
                 <span>trading app</span>
               </div>
             </footer>
-          </section>
-        </main>
         <div className="absolute m-10" ref={dropdownRef}>
           {dropdown && <Dropdown />}
         </div>

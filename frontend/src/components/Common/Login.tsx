@@ -39,10 +39,12 @@ export const Login = ({head,loginType}:Props) => {
           const token = response.data.Token;
           const name = response.data.name
           const email = response.data.email
+          const id = response.data.id
          
           localStorage.setItem("token", token);
           localStorage.setItem("name", name);
           localStorage.setItem("email", email);
+          localStorage.setItem("id", id);
           navigate('/home')
           speak()
           
@@ -93,7 +95,6 @@ export const Login = ({head,loginType}:Props) => {
                 placeholder="Email"
                 value={email}
                 onChange={(e)=> setEmail(e.target.value)}
-                autoComplete='email'
                 required
               />
             </div>

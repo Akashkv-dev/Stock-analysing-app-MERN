@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { addgroup } from "../../Service/UserApi";
+import { ToastContainer, toast } from "react-toastify";
 
 interface GroupCreateComponentProps {
     cancelGroup: () => void;
@@ -11,12 +12,27 @@ const GroupCreateComponent: React.FC<GroupCreateComponentProps> = ({cancelGroup}
   const handleSubmit =async (event:React.FormEvent) => {
     event.preventDefault();
     // Handle group creation logic here
-    console.log('Group Name:', groupName);
+    const id=localStorage.getItem('id')
+    if (!id) {
+      console.error("User ID not found");
+      return;
+    }
+    const userId = parseInt(id, 10);
     try {
-      await addgroup(groupName);
-    } catch (error) {
-      console.error(error);
-      
+      const data={
+        gName:groupName,
+        adminId:userId
+      }
+      const response=await addgroup(data);
+      if(response.status==200){
+        console.log(response);
+        toast('Group Created')    
+      }
+      cancelGroup()
+    } catch (err) {
+      console.error(err);
+      const error = err as { response: { data: { message: string } } };
+      toast(error.response.data.message)
     }
   };
   const handleCancel= ()=>{
@@ -24,6 +40,8 @@ const GroupCreateComponent: React.FC<GroupCreateComponentProps> = ({cancelGroup}
   }
 
   return (
+    <>
+    <ToastContainer/>
     <div className="max-w-md mx-auto">
       <h2 className="text-2xl font-bold mb-4">New Group</h2>
       <div className=" bg-white p-6 rounded shadow-md">
@@ -57,6 +75,7 @@ const GroupCreateComponent: React.FC<GroupCreateComponentProps> = ({cancelGroup}
         >Close</button>
       </div>
     </div>
+    </>
   );
 };
 
